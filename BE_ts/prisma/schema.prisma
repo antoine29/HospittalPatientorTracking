@@ -1,0 +1,111 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["mongoDb"]
+}
+
+datasource db {
+  provider = "mongodb"
+  //url      = env("DATABASE_URL")
+  url      = "mongodb://admin:password@localhost/patientor?authSource=admin"
+}
+
+// ToDo: check enbeded docs
+// https://github.com/prisma/prisma/issues/6708
+// Patient
+model Patient {
+  id                      String              @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  name                    String
+  dateOfBirth             String
+  ssn                     String              @unique
+  gender                  Gender
+  occupation              String
+  healthCheckEntries      HealthCheckEntry[]
+
+  @@map("Patients")
+}
+
+enum Gender {
+  male
+  female
+  other
+}
+
+// Diagnoses
+model Diagnosis {
+  id                    String              @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  code                  String
+  name                  String
+  latin                 String
+  healthCheckEntryIDs   String[]            @db.Array(ObjectId)
+  healthCheckEntries    HealthCheckEntry[]  @relation(fields: [healthCheckEntryIDs])
+
+  @@map("Diagnoses")
+}
+
+// Health check entry
+model HealthCheckEntry {
+  id                  String              @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  description         String
+  date                String
+  specialist          String
+  type                String              @default("HealthCheck")
+  healthCheckRating   HealthCheckRating
+  patientId           String              @db.ObjectId
+  patient             Patient             @relation(fields: [patientId], references: [id])
+  diagnosisIDs        String[]            @db.Array(ObjectId)
+  diagnoses           Diagnosis[]         @relation(fields: [diagnosisIDs])
+
+  @@map("HealthCheckEntries")
+}
+
+enum HealthCheckRating {
+  Healthy
+  LowRisk
+  HighRisk
+  CriticalRis
+}
+
+
+// Hospital entry
+//model HospitalDischarge {
+//  date      String
+//  criteria  String
+//
+//  @@map("HospitalDischarges")
+//}
+
+//model HospitalEntry {
+//  id                  String      @id @map("_id") @db.ObjectId
+//  description         String
+//  date                String
+//  specialist          String
+//  diagnosis           Diagnose[]
+//  type                String      @default("Hospital")
+//  discharge?          HospitalDischarge
+//
+//  @@map("HospitalEntries")
+//}
+
+// Occupational healthcare entry
+//model SickLeave {
+//  startDate   String
+//  endDate     String
+//
+//  @@map("SickLeaves")
+//}
+
+//model OccupationalHealthcareEntry {
+//  id                  String      @id @default(dbgenerated()) @map("_id") @db.ObjectId
+//  description         String
+//  date                String
+//  specialist          String
+//  diagnosis           Diagnose[]
+//  type                String      @default("OccupationalHealthcare")
+//  employerName        String
+//  sickLeave?          SickLeave
+//
+//  @@map("OccupationalHealthcareEntries")
+//}
