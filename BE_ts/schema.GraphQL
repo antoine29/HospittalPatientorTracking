@@ -9,13 +9,59 @@ type Diagnosis {
   name: String
 }
 
+enum Gender {
+  Female
+  Male
+  Other
+}
+
+type HealthCheckEntry {
+  date: String
+  description: String
+  diagnoses: [Diagnosis]
+  healthCheckRating: String
+  id: String!
+  patient: Patient
+  specialist: String
+  type: String
+}
+
+type HospitalDischarge {
+  criteria: String
+  date: String
+  hospitalEntry: HospitalEntry
+  id: String!
+}
+
+input HospitalDischargeInput {
+  criteria: String
+  date: String
+}
+
+type HospitalEntry {
+  date: String
+  description: String
+  diagnoses: [Diagnosis]
+  discharge: HospitalDischarge
+  healthCheckRating: String
+  id: String!
+  patient: Patient
+  specialist: String
+  type: String
+}
+
 type Mutation {
-  createPatient(dateOfBirth: String!, gender: String!, name: String!, occupation: String!, ssn: String!): Patient!
+  Diagnosis(code: String!, latin: String!, name: String!): Diagnosis!
+  HealthCheckEntry(date: String!, description: String!, diagnosisIDs: [String!]!, healthCheckRating: String!, patientId: String!, specialist: String!): HealthCheckEntry!
+  HospitalEntry(date: String!, description: String!, diagnosisIDs: [String!]!, patientId: String!, specialist: String!): HospitalEntry!
+  HospitalEntryDischarge(discharge: HospitalDischargeInput!, hospitalEntryId: String!): HospitalEntry
+  Patient(dateOfBirth: String!, gender: String!, name: String!, occupation: String!, ssn: String!): Patient!
 }
 
 type Patient {
   dateOfBirth: String
-  gender: String
+  gender: Gender
+  healthCheckEntries: [HealthCheckEntry]
   id: String!
   name: String
   occupation: String
@@ -23,7 +69,9 @@ type Patient {
 }
 
 type Query {
-  diagnoses: [Diagnosis]
-  patient(id: String!): Patient
-  patients: [Patient]
+  Diagnoses: [Diagnosis]
+  HealthCheckEntry: [HealthCheckEntry]
+  HospitalEntries: [HospitalEntry]
+  Patient(id: String!): Patient
+  Patients: [Patient]
 }

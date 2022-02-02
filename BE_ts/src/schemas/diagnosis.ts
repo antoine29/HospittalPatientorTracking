@@ -20,25 +20,6 @@ export const DiagnosisQueries = extendType({
 				return GetDiagnoses();
 			},
 		});
-		// get patient by id
-		//t.field('patient', {
-		//	type: 'Patient',
-		//	args: {
-		//		id: nonNull(stringArg()),
-		//	},
-		//	resolve(_root, args, ctx) {
-		//		//return ctx.prisma.patient.findUnique({
-		//		//	where: { id: args.id },
-		//		//});
-		//		return GetPatient(args.id);
-		//	},
-		//});
-		//t.list.field('roles', {
-		//	type: 'Role',
-		//	resolve(_root, _args, ctx) {
-		//		return ctx.db.role.findMany();
-		//	},
-		//});
 	},
 });
 
