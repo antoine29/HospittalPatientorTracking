@@ -1,5 +1,5 @@
 import { objectType, extendType, nonNull, stringArg } from "nexus";
-import {GetPatients, GetPatient, CreatePatient} from '../dao/patients'
+import { GetPatients, GetPatient, CreatePatient } from '../dao/patients'
 
 export const Patient = objectType({
 	name: 'Patient',
@@ -10,6 +10,9 @@ export const Patient = objectType({
 		t.string('ssn');
 		t.string('gender');
 		t.string('occupation');
+		t.list.field('healthCheckEntries', {
+			type: 'HealthCheckEntry'
+		})
 	},
 });
 
@@ -17,22 +20,20 @@ export const PatientQueries = extendType({
 	type: 'Query',
 	definition(t) {
 		// get all patients
-		t.list.field('patients', {
+		t.list.field('Patients', {
 			type: 'Patient',
 			resolve(_root, _args, ctx) {
 				return GetPatients();
 			},
 		});
 		// get patient by id
-		t.field('patient', {
+		t.field('Patient', {
 			type: 'Patient',
 			args: {
 				id: nonNull(stringArg()),
 			},
 			resolve(_root, args, ctx) {
-				//return ctx.prisma.patient.findUnique({
-				//	where: { id: args.id },
-				//});
+				//return ctx.prisma.patient.findUnique({ where: { id: args.id } });
 				return GetPatient(args.id);
 			},
 		});
@@ -49,7 +50,7 @@ export const PatientMutations = extendType({
 	type: 'Mutation',
 	definition(t) {
 		// create a new patient
-		t.nonNull.field('createPatient', {
+		t.nonNull.field('Patient', {
 			type: 'Patient',
 			args: {
 				name: nonNull(stringArg()),
