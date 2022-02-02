@@ -1,17 +1,20 @@
 import { db } from './db'
 
 export const GetPatients = async () => {
-	return db.patient.findMany();
+	return await db.patient.findMany();
 }
 
 export const GetPatient = async (patientId: string) => {
 	return await db.patient.findUnique({
 		where: { id: patientId },
+		include: {
+			healthCheckEntries: true
+		}
 	});
 }
 
 export const CreatePatient = async patient => {
-	return db.patient.create({
+	return await db.patient.create({
 		data: {
 			name: patient.name,
 			dateOfBirth: patient.dateOfBirth,

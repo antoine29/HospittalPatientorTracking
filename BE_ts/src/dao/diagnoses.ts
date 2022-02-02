@@ -1,11 +1,11 @@
 import { db } from './db'
 
 export const GetDiagnoses = async () => {
-	return db.diagnosis.findMany();
+	return await db.diagnosis.findMany();
 }
 
 export const CreateDiagnosis = async diagnosis => {
-	return db.diagnosis.create({
+	return await db.diagnosis.create({
 		data: {
 			code: diagnosis.code,
 			name: diagnosis.name,
