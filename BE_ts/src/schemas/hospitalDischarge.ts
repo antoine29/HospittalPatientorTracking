@@ -1,6 +1,5 @@
 import { objectType, extendType, nonNull, stringArg, list } from "nexus";
 
-
 export const HospitalDischarge = objectType({
 	name: 'HospitalDischarge',
 	definition(t) {

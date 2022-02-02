@@ -18,6 +18,10 @@ export interface NexusGenInputs {
     criteria?: string | null; // String
     date?: string | null; // String
   }
+  SickLeaveInput: { // input type
+    endDate?: string | null; // String
+    startDate?: string | null; // String
+  }
 }
 
 export interface NexusGenEnums {
@@ -67,6 +71,17 @@ export interface NexusGenObjects {
     type?: string | null; // String
   }
   Mutation: {};
+  OccupationalHealthEntry: { // root type
+    date?: string | null; // String
+    description?: string | null; // String
+    diagnoses?: Array<NexusGenRootTypes['Diagnosis'] | null> | null; // [Diagnosis]
+    employerName?: string | null; // String
+    id: string; // String!
+    patient?: NexusGenRootTypes['Patient'] | null; // Patient
+    sickLeave?: NexusGenRootTypes['SickLeave'] | null; // SickLeave
+    specialist?: string | null; // String
+    type?: string | null; // String
+  }
   Patient: { // root type
     dateOfBirth?: string | null; // String
     gender?: NexusGenEnums['Gender'] | null; // Gender
@@ -77,6 +92,12 @@ export interface NexusGenObjects {
     ssn?: string | null; // String
   }
   Query: {};
+  SickLeave: { // root type
+    endDate?: string | null; // String
+    id: string; // String!
+    occupationalHealthEntry?: NexusGenRootTypes['OccupationalHealthEntry'] | null; // OccupationalHealthEntry
+    startDate?: string | null; // String
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -128,7 +149,20 @@ export interface NexusGenFieldTypes {
     HealthCheckEntry: NexusGenRootTypes['HealthCheckEntry']; // HealthCheckEntry!
     HospitalEntry: NexusGenRootTypes['HospitalEntry']; // HospitalEntry!
     HospitalEntryDischarge: NexusGenRootTypes['HospitalEntry'] | null; // HospitalEntry
+    OccupationalHealthEntry: NexusGenRootTypes['OccupationalHealthEntry']; // OccupationalHealthEntry!
+    OccupationalHealthEntrySickLeave: NexusGenRootTypes['OccupationalHealthEntry'] | null; // OccupationalHealthEntry
     Patient: NexusGenRootTypes['Patient']; // Patient!
+  }
+  OccupationalHealthEntry: { // field return type
+    date: string | null; // String
+    description: string | null; // String
+    diagnoses: Array<NexusGenRootTypes['Diagnosis'] | null> | null; // [Diagnosis]
+    employerName: string | null; // String
+    id: string; // String!
+    patient: NexusGenRootTypes['Patient'] | null; // Patient
+    sickLeave: NexusGenRootTypes['SickLeave'] | null; // SickLeave
+    specialist: string | null; // String
+    type: string | null; // String
   }
   Patient: { // field return type
     dateOfBirth: string | null; // String
@@ -143,8 +177,15 @@ export interface NexusGenFieldTypes {
     Diagnoses: Array<NexusGenRootTypes['Diagnosis'] | null> | null; // [Diagnosis]
     HealthCheckEntry: Array<NexusGenRootTypes['HealthCheckEntry'] | null> | null; // [HealthCheckEntry]
     HospitalEntries: Array<NexusGenRootTypes['HospitalEntry'] | null> | null; // [HospitalEntry]
+    OccupationalHealthEntries: Array<NexusGenRootTypes['OccupationalHealthEntry'] | null> | null; // [OccupationalHealthEntry]
     Patient: NexusGenRootTypes['Patient'] | null; // Patient
     Patients: Array<NexusGenRootTypes['Patient'] | null> | null; // [Patient]
+  }
+  SickLeave: { // field return type
+    endDate: string | null; // String
+    id: string; // String!
+    occupationalHealthEntry: NexusGenRootTypes['OccupationalHealthEntry'] | null; // OccupationalHealthEntry
+    startDate: string | null; // String
   }
 }
 
@@ -187,7 +228,20 @@ export interface NexusGenFieldTypeNames {
     HealthCheckEntry: 'HealthCheckEntry'
     HospitalEntry: 'HospitalEntry'
     HospitalEntryDischarge: 'HospitalEntry'
+    OccupationalHealthEntry: 'OccupationalHealthEntry'
+    OccupationalHealthEntrySickLeave: 'OccupationalHealthEntry'
     Patient: 'Patient'
+  }
+  OccupationalHealthEntry: { // field return type name
+    date: 'String'
+    description: 'String'
+    diagnoses: 'Diagnosis'
+    employerName: 'String'
+    id: 'String'
+    patient: 'Patient'
+    sickLeave: 'SickLeave'
+    specialist: 'String'
+    type: 'String'
   }
   Patient: { // field return type name
     dateOfBirth: 'String'
@@ -202,8 +256,15 @@ export interface NexusGenFieldTypeNames {
     Diagnoses: 'Diagnosis'
     HealthCheckEntry: 'HealthCheckEntry'
     HospitalEntries: 'HospitalEntry'
+    OccupationalHealthEntries: 'OccupationalHealthEntry'
     Patient: 'Patient'
     Patients: 'Patient'
+  }
+  SickLeave: { // field return type name
+    endDate: 'String'
+    id: 'String'
+    occupationalHealthEntry: 'OccupationalHealthEntry'
+    startDate: 'String'
   }
 }
 
@@ -232,6 +293,18 @@ export interface NexusGenArgTypes {
     HospitalEntryDischarge: { // args
       discharge: NexusGenInputs['HospitalDischargeInput']; // HospitalDischargeInput!
       hospitalEntryId: string; // String!
+    }
+    OccupationalHealthEntry: { // args
+      date: string; // String!
+      description: string; // String!
+      diagnosisIDs: string[]; // [String!]!
+      employerName: string; // String!
+      patientId: string; // String!
+      specialist: string; // String!
+    }
+    OccupationalHealthEntrySickLeave: { // args
+      occupationalHealthEntryId: string; // String!
+      sickLeave: NexusGenInputs['SickLeaveInput']; // SickLeaveInput!
     }
     Patient: { // args
       dateOfBirth: string; // String!

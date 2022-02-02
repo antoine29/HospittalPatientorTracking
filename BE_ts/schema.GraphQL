@@ -55,7 +55,21 @@ type Mutation {
   HealthCheckEntry(date: String!, description: String!, diagnosisIDs: [String!]!, healthCheckRating: String!, patientId: String!, specialist: String!): HealthCheckEntry!
   HospitalEntry(date: String!, description: String!, diagnosisIDs: [String!]!, patientId: String!, specialist: String!): HospitalEntry!
   HospitalEntryDischarge(discharge: HospitalDischargeInput!, hospitalEntryId: String!): HospitalEntry
+  OccupationalHealthEntry(date: String!, description: String!, diagnosisIDs: [String!]!, employerName: String!, patientId: String!, specialist: String!): OccupationalHealthEntry!
+  OccupationalHealthEntrySickLeave(occupationalHealthEntryId: String!, sickLeave: SickLeaveInput!): OccupationalHealthEntry
   Patient(dateOfBirth: String!, gender: String!, name: String!, occupation: String!, ssn: String!): Patient!
+}
+
+type OccupationalHealthEntry {
+  date: String
+  description: String
+  diagnoses: [Diagnosis]
+  employerName: String
+  id: String!
+  patient: Patient
+  sickLeave: SickLeave
+  specialist: String
+  type: String
 }
 
 type Patient {
@@ -72,6 +86,19 @@ type Query {
   Diagnoses: [Diagnosis]
   HealthCheckEntry: [HealthCheckEntry]
   HospitalEntries: [HospitalEntry]
+  OccupationalHealthEntries: [OccupationalHealthEntry]
   Patient(id: String!): Patient
   Patients: [Patient]
+}
+
+type SickLeave {
+  endDate: String
+  id: String!
+  occupationalHealthEntry: OccupationalHealthEntry
+  startDate: String
+}
+
+input SickLeaveInput {
+  endDate: String
+  startDate: String
 }
