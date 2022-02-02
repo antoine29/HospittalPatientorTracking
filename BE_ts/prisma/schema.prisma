@@ -23,28 +23,31 @@ enum Gender {
 }
 
 model Patient {
-  id                      String              @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  name                    String
-  dateOfBirth             String
-  ssn                     String              @unique
-  gender                  Gender
-  occupation              String
-  healthCheckEntries      HealthCheckEntry[]
-  hospitalEntries         HospitalEntry[]
+  id                              String              @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  name                            String
+  dateOfBirth                     String
+  ssn                             String              @unique
+  gender                          Gender
+  occupation                      String
+  healthCheckEntries              HealthCheckEntry[]
+  hospitalEntries                 HospitalEntry[]
+  occupationalHealthEntries       OccupationalHealthEntry[]
 
   @@map("Patients")
 }
 
 // Diagnosis
 model Diagnosis {
-  id                    String              @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  code                  String              @unique
-  name                  String
-  latin                 String
-  healthCheckEntryIDs   String[]            @db.Array(ObjectId)
-  healthCheckEntries    HealthCheckEntry[]  @relation(fields: [healthCheckEntryIDs])
-  hospitalEntryIDs      String[]            @db.Array(ObjectId)
-  hospitalEntries       HospitalEntry[]     @relation(fields: [hospitalEntryIDs])
+  id                              String                        @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  code                            String                        @unique
+  name                            String
+  latin                           String
+  healthCheckEntryIDs             String[]                      @db.Array(ObjectId)
+  healthCheckEntries              HealthCheckEntry[]            @relation(fields: [healthCheckEntryIDs])
+  hospitalEntryIDs                String[]                      @db.Array(ObjectId)
+  hospitalEntries                 HospitalEntry[]               @relation(fields: [hospitalEntryIDs])
+  occupationalHealthEntryIDs      String[]                      @db.Array(ObjectId)
+  occupationalHealthEntries       OccupationalHealthEntry[]     @relation(fields: [occupationalHealthEntryIDs])
 
   @@map("Diagnoses")
 }
@@ -99,22 +102,28 @@ model HospitalEntry {
 }
 
 // Occupational healthcare entry
-//model SickLeave {
-//  startDate   String
-//  endDate     String
-//
-//  @@map("SickLeaves")
-//}
+model SickLeave {
+  id                        String                      @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  startDate                 String
+  endDate                   String
+  occupationalHealthEntry   OccupationalHealthEntry?
 
-//model OccupationalHealthcareEntry {
-//  id                  String      @id @default(dbgenerated()) @map("_id") @db.ObjectId
-//  description         String
-//  date                String
-//  specialist          String
-//  diagnosis           Diagnose[]
-//  type                String      @default("OccupationalHealthcare")
-//  employerName        String
-//  sickLeave?          SickLeave
-//
-//  @@map("OccupationalHealthcareEntries")
-//}
+  @@map("SickLeaves")
+}
+
+model OccupationalHealthEntry {
+  id                  String          @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  description         String
+  date                String
+  specialist          String
+  type                String          @default("OccupationalHealth")
+  employerName        String
+  sickLeaveId         String?         @db.ObjectId
+  sickLeave           SickLeave?      @relation(fields: [sickLeaveId], references: [id])
+  patientId           String          @db.ObjectId
+  patient             Patient         @relation(fields: [patientId], references: [id])
+  diagnosisIDs        String[]        @db.Array(ObjectId)
+  diagnoses           Diagnosis[]     @relation(fields: [diagnosisIDs])
+
+  @@map("OccupationalHealthEntries")
+}

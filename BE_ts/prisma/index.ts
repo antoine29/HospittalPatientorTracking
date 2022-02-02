@@ -7,6 +7,8 @@ export {
     HealthCheckEntry,
     HospitalEntry,
     HospitalDischarge,
+    OccupationalHealthEntry,
+    SickLeave,
 
     Gender,
     HealthCheckRating,  
