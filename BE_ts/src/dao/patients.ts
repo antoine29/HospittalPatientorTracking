@@ -1,4 +1,4 @@
-import { prismaClient, Patient } from './prisma'
+import { prismaClient, Patient } from '../../prisma'
 
 export const GetPatients = async () => {
 	return await prismaClient.patient.findMany();
