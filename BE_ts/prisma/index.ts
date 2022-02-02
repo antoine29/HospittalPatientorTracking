@@ -5,6 +5,8 @@ export {
     Patient,
     Diagnosis,
     HealthCheckEntry,
+    HospitalEntry,
+    HospitalDischarge,
 
     Gender,
     HealthCheckRating,  

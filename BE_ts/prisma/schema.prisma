@@ -17,9 +17,9 @@ datasource db {
 
 // Patient
 enum Gender {
-  male
-  female
-  other
+  Male
+  Female
+  Other
 }
 
 model Patient {
@@ -30,18 +30,21 @@ model Patient {
   gender                  Gender
   occupation              String
   healthCheckEntries      HealthCheckEntry[]
+  hospitalEntries         HospitalEntry[]
 
   @@map("Patients")
 }
 
-// Diagnoses
+// Diagnosis
 model Diagnosis {
   id                    String              @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  code                  String
+  code                  String              @unique
   name                  String
   latin                 String
   healthCheckEntryIDs   String[]            @db.Array(ObjectId)
   healthCheckEntries    HealthCheckEntry[]  @relation(fields: [healthCheckEntryIDs])
+  hospitalEntryIDs      String[]            @db.Array(ObjectId)
+  hospitalEntries       HospitalEntry[]     @relation(fields: [hospitalEntryIDs])
 
   @@map("Diagnoses")
 }
@@ -69,27 +72,31 @@ model HealthCheckEntry {
   @@map("HealthCheckEntries")
 }
 
-
-
 // Hospital entry
-//model HospitalDischarge {
-//  date      String
-//  criteria  String
-//
-//  @@map("HospitalDischarges")
-//}
+model HospitalDischarge {
+  id              String          @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  date            String
+  criteria        String
+  hospitalEntry   HospitalEntry?
 
-//model HospitalEntry {
-//  id                  String      @id @map("_id") @db.ObjectId
-//  description         String
-//  date                String
-//  specialist          String
-//  diagnosis           Diagnose[]
-//  type                String      @default("Hospital")
-//  discharge?          HospitalDischarge
-//
-//  @@map("HospitalEntries")
-//}
+  @@map("HospitalDischarges")
+}
+
+model HospitalEntry {
+  id                  String              @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  description         String
+  date                String
+  specialist          String
+  type                String              @default("Hospital")
+  dischargeId         String?             @db.ObjectId
+  discharge           HospitalDischarge?  @relation(fields: [dischargeId], references: [id])
+  patientId           String              @db.ObjectId
+  patient             Patient             @relation(fields: [patientId], references: [id])
+  diagnosisIDs        String[]            @db.Array(ObjectId)
+  diagnoses           Diagnosis[]         @relation(fields: [diagnosisIDs])
+
+  @@map("HospitalEntries")
+}
 
 // Occupational healthcare entry
 //model SickLeave {
