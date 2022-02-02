@@ -14,7 +14,14 @@ datasource db {
 
 // ToDo: check enbeded docs
 // https://github.com/prisma/prisma/issues/6708
+
 // Patient
+enum Gender {
+  male
+  female
+  other
+}
+
 model Patient {
   id                      String              @id @default(dbgenerated()) @map("_id") @db.ObjectId
   name                    String
@@ -25,12 +32,6 @@ model Patient {
   healthCheckEntries      HealthCheckEntry[]
 
   @@map("Patients")
-}
-
-enum Gender {
-  male
-  female
-  other
 }
 
 // Diagnoses
@@ -46,6 +47,13 @@ model Diagnosis {
 }
 
 // Health check entry
+enum HealthCheckRating {
+  Healthy
+  LowRisk
+  HighRisk
+  CriticalRis
+}
+
 model HealthCheckEntry {
   id                  String              @id @default(dbgenerated()) @map("_id") @db.ObjectId
   description         String
@@ -61,12 +69,6 @@ model HealthCheckEntry {
   @@map("HealthCheckEntries")
 }
 
-enum HealthCheckRating {
-  Healthy
-  LowRisk
-  HighRisk
-  CriticalRis
-}
 
 
 // Hospital entry
