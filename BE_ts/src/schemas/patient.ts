@@ -1,5 +1,10 @@
-import { objectType, extendType, nonNull, stringArg } from "nexus";
+import { objectType, enumType, extendType, nonNull, stringArg } from "nexus";
 import { GetPatients, GetPatient, CreatePatient } from '../dao/patients'
+
+export const Gender = enumType({
+	name: 'Gender',
+	members: ['Male', 'Female', 'Other']
+})
 
 export const Patient = objectType({
 	name: 'Patient',
@@ -8,7 +13,9 @@ export const Patient = objectType({
 		t.string('name');
 		t.string('dateOfBirth');
 		t.string('ssn');
-		t.string('gender');
+		t.field('gender', {
+			type: 'Gender'
+		});
 		t.string('occupation');
 		t.list.field('healthCheckEntries', {
 			type: 'HealthCheckEntry'
@@ -34,15 +41,10 @@ export const PatientQueries = extendType({
 			},
 			resolve(_root, args, ctx) {
 				//return ctx.prisma.patient.findUnique({ where: { id: args.id } });
-				return GetPatient(args.id);
+				const patientId: string = args.id;
+				return GetPatient(patientId);
 			},
 		});
-		//t.list.field('roles', {
-		//	type: 'Role',
-		//	resolve(_root, _args, ctx) {
-		//		return ctx.db.role.findMany();
-		//	},
-		//});
 	},
 });
 
