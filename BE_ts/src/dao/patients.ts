@@ -1,11 +1,11 @@
-import { db } from './db'
+import { prismaClient, Patient } from './prisma'
 
 export const GetPatients = async () => {
-	return await db.patient.findMany();
+	return await prismaClient.patient.findMany();
 }
 
 export const GetPatient = async (patientId: string) => {
-	return await db.patient.findUnique({
+	return await prismaClient.patient.findUnique({
 		where: { id: patientId },
 		include: {
 			healthCheckEntries: true
@@ -13,8 +13,8 @@ export const GetPatient = async (patientId: string) => {
 	});
 }
 
-export const CreatePatient = async patient => {
-	return await db.patient.create({
+export const CreatePatient = async (patient: Patient) => {
+	return await prismaClient.patient.create({
 		data: {
 			name: patient.name,
 			dateOfBirth: patient.dateOfBirth,

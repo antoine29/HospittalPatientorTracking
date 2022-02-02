@@ -1,7 +1,7 @@
-import { db } from './db'
+import { prismaClient, HealthCheckEntry } from './prisma'
 
 export const GetHealthCheckEntries = async () => {
-	return await db.healthCheckEntry.findMany({
+	return await prismaClient.healthCheckEntry.findMany({
 		include: {
 			patient: true,
 			diagnoses: true
@@ -9,8 +9,8 @@ export const GetHealthCheckEntries = async () => {
 	});
 }
 
-export const CreateHealthCheckEntry = async entry => {
-	return await db.healthCheckEntry.create({
+export const CreateHealthCheckEntry = async (entry: HealthCheckEntry) => {
+	return await prismaClient.healthCheckEntry.create({
 		data: {
 			description: entry.description,
 			date: entry.date,
