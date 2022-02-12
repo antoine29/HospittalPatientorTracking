@@ -17,9 +17,7 @@ export const Patient = objectType({
 			type: 'Gender'
 		});
 		t.string('occupation');
-		t.list.field('healthCheckEntries', {
-			type: 'HealthCheckEntry'
-		})
+		t.list.field('healthCheckEntries', { type: 'HealthCheckEntry' })
 	},
 });
 
@@ -52,7 +50,7 @@ export const PatientMutations = extendType({
 	type: 'Mutation',
 	definition(t) {
 		// create a new patient
-		t.nonNull.field('Patient', {
+		t.nonNull.field('NewPatient', {
 			type: 'Patient',
 			args: {
 				name: nonNull(stringArg()),
