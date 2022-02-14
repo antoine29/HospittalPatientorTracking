@@ -57,7 +57,7 @@ enum HealthCheckRating {
   Healthy
   LowRisk
   HighRisk
-  CriticalRis
+  CriticalRisk
 }
 
 model HealthCheckEntry {
