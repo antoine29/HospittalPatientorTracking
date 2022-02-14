@@ -1,21 +1,17 @@
-import { objectType, extendType, nonNull, stringArg, list } from "nexus";
-import { GetHealthCheckEntries, CreateHealthCheckEntry } from '../dao/healthCheckEntries'
+import { objectType, extendType, nonNull, enumType } from "nexus";
+import { GetHealthCheckEntries, CreateHealthCheckEntry } from '../dao/healthCheckEntries';
+import { NewEntryInput } from '.';
+
+export const HealthCheckRating = enumType({
+	name: 'HealthCheckRating',
+	members: ['Healthy', 'LowRisk', 'HighRisk', 'CriticalRisk']
+})
 
 export const HealthCheckEntry = objectType({
 	name: 'HealthCheckEntry',
 	definition(t) {
-		t.nonNull.string('id');
-		t.string('description');
-		t.string('date');
-		t.string('specialist');
-		t.string('type');
-		t.string('healthCheckRating');
-		t.field('patient', {
-			type: 'Patient'
-		})
-		t.list.field('diagnoses', {
-			type: 'Diagnosis'
-		})
+		t.implements('Entry')
+		t.field('healthCheckRating', { type: 'HealthCheckRating' });
 	},
 });
 
@@ -50,25 +46,20 @@ export const HealthCheckEntryQueries = extendType({
 	},
 });
 
+const newHealthCheckEntryInput = {
+	...NewEntryInput,
+	healthCheckRating: nonNull('HealthCheckRating'),	
+};
 
 export const HealthCheckEntryMutations = extendType({
 	type: 'Mutation',
 	definition(t) {
 		t.nonNull.field('HealthCheckEntry', {
 			type: 'HealthCheckEntry',
-			args: {
-				description: nonNull(stringArg()),
-				date: nonNull(stringArg()),
-				specialist: nonNull(stringArg()),
-				//type: nonNull(stringArg()),
-				healthCheckRating: nonNull(stringArg()),// todo: graphql enums
-				patientId: nonNull(stringArg()),
-				diagnosisIDs: nonNull(list(nonNull(stringArg())))
-			},
+			args: newHealthCheckEntryInput,
 			resolve(_root, args, ctx) {
 				return CreateHealthCheckEntry(args);
 			},
 		});
 	},
 });
-

@@ -2,26 +2,15 @@ import { objectType, extendType, nonNull, stringArg, list, arg, extendInputType 
 import {
     GetOccupationalHealthEntries,
     CreateOccupationalHealthEntry,
-    UpsertOccupationalHealthEntrySickLeave } from '../dao/occupationalHealthEntries'
+    UpsertOccupationalHealthEntrySickLeave } from '../dao/occupationalHealthEntries';
+import { NewEntryInput } from ".";
 
 export const OccupationalHealthEntry = objectType({
 	name: 'OccupationalHealthEntry',
 	definition(t) {
-		t.nonNull.string('id');
-		t.string('description');
-		t.string('date');
-		t.string('specialist');
-		t.string('type');
+		t.implements('Entry')
         t.string('employerName');
-        t.field('sickLeave', {
-			type: 'SickLeave'
-		});
-		t.field('patient', {
-			type: 'Patient'
-		});
-		t.list.field('diagnoses', {
-			type: 'Diagnosis'
-		});
+        t.field('sickLeave', { type: 'SickLeave' });
 	},
 });
 
@@ -41,24 +30,22 @@ export const OccupationalHealthEntryQueries = extendType({
 export const SickLeaveInput = extendInputType({
     type: 'SickLeaveInput',
     definition(t) {
-        t.string('startDate');
-        t.string('endDate');
+        t.nonNull.string('startDate');
+        t.nonNull.string('endDate');
     }
 });
+
+const NewOccupationalHealthEntryInput = {
+	...NewEntryInput,
+	employerName: nonNull(stringArg())
+}
 
 export const OccupationalHealthEntryMutations = extendType({
 	type: 'Mutation',
 	definition(t) {
 		t.nonNull.field('OccupationalHealthEntry', {
 			type: 'OccupationalHealthEntry',
-			args: {
-				description: nonNull(stringArg()),
-				date: nonNull(stringArg()),
-				specialist: nonNull(stringArg()),
-                employerName: nonNull(stringArg()),
-				patientId: nonNull(stringArg()),
-				diagnosisIDs: nonNull(list(nonNull(stringArg())))
-			},
+			args: NewOccupationalHealthEntryInput,
 			resolve(_root, args, ctx) {
 				return CreateOccupationalHealthEntry(args);
 			},

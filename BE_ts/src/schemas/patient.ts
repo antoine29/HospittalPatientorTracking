@@ -6,6 +6,10 @@ export const Gender = enumType({
 	members: ['Male', 'Female', 'Other']
 })
 
+// ToDo: fix model
+//Patient => full fields
+//Patients => basic fields
+// or just get a way to omit the 'entries' field in a getPatients query
 export const Patient = objectType({
 	name: 'Patient',
 	definition(t) {
@@ -13,25 +17,23 @@ export const Patient = objectType({
 		t.string('name');
 		t.string('dateOfBirth');
 		t.string('ssn');
-		t.field('gender', {
-			type: 'Gender'
-		});
+		t.field('gender', { type: 'Gender' });
 		t.string('occupation');
-		t.list.field('healthCheckEntries', { type: 'HealthCheckEntry' })
+		t.list.field('entries', { type: 'Entry' });
 	},
 });
 
 export const PatientQueries = extendType({
 	type: 'Query',
 	definition(t) {
-		// get all patients
+		// get patients
 		t.list.field('Patients', {
 			type: 'Patient',
 			resolve(_root, _args, ctx) {
 				return GetPatients();
 			},
 		});
-		// get patient by id
+		// get patient
 		t.field('Patient', {
 			type: 'Patient',
 			args: {
@@ -40,7 +42,8 @@ export const PatientQueries = extendType({
 			resolve(_root, args, ctx) {
 				//return ctx.prisma.patient.findUnique({ where: { id: args.id } });
 				const patientId: string = args.id;
-				return GetPatient(patientId);
+				const patient = GetPatient(patientId);
+				return patient;
 			},
 		});
 	},
@@ -56,7 +59,7 @@ export const PatientMutations = extendType({
 				name: nonNull(stringArg()),
 				dateOfBirth: nonNull(stringArg()),
 				ssn: nonNull(stringArg()),
-				gender: nonNull(stringArg()),
+				gender: nonNull('Gender'),
 				occupation: nonNull(stringArg())
 			},
 			resolve(_root, args, ctx) {
