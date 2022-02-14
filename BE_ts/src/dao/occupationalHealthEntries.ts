@@ -1,5 +1,8 @@
 import { prismaClient, OccupationalHealthEntry, SickLeave } from '../../prisma'
 
+type NewOccupationalHealthEntry = Omit<OccupationalHealthEntry, 'id' | 'type' | 'sickLeaveId'>;
+type NewSickLeave = Omit<SickLeave, 'id'>;
+
 export const GetOccupationalHealthEntries = async () => {
 	return await prismaClient.occupationalHealthEntry.findMany({
 		include: {
@@ -10,7 +13,7 @@ export const GetOccupationalHealthEntries = async () => {
 	});
 }
 
-export const CreateOccupationalHealthEntry = async (entry: OccupationalHealthEntry) => {
+export const CreateOccupationalHealthEntry = async (entry: NewOccupationalHealthEntry) => {
 	return await prismaClient.occupationalHealthEntry.create({
 		data: {
 			description: entry.description,
@@ -32,7 +35,7 @@ export const CreateOccupationalHealthEntry = async (entry: OccupationalHealthEnt
 	});
 }
 
-export const UpsertOccupationalHealthEntrySickLeave = async (entryId: string, sickLeave: SickLeave) => {
+export const UpsertOccupationalHealthEntrySickLeave = async (entryId: string, sickLeave: NewSickLeave) => {
     return await prismaClient.occupationalHealthEntry.update({
         where: {
             id: entryId

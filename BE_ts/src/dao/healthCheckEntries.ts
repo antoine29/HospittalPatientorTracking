@@ -1,4 +1,6 @@
 import { prismaClient, HealthCheckEntry } from '../../prisma'
+  
+type NewHealthCheckEntry = Omit<HealthCheckEntry, 'id' | 'type'>;
 
 export const GetHealthCheckEntries = async () => {
 	return await prismaClient.healthCheckEntry.findMany({
@@ -9,13 +11,12 @@ export const GetHealthCheckEntries = async () => {
 	});
 }
 
-export const CreateHealthCheckEntry = async (entry: HealthCheckEntry) => {
+export const CreateHealthCheckEntry = async (entry: NewHealthCheckEntry) => {
 	return await prismaClient.healthCheckEntry.create({
 		data: {
 			description: entry.description,
 			date: entry.date,
 			specialist: entry.specialist,
-			type: entry.type,
 			healthCheckRating: entry.healthCheckRating,
 			patient: {
 				connect: { id: entry.patientId }

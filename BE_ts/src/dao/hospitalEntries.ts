@@ -1,5 +1,8 @@
 import { prismaClient, HospitalEntry, HospitalDischarge } from '../../prisma'
 
+type NewHospitalEntry = Omit<HospitalEntry, 'id' | 'type' | 'dischargeId'>;
+type NewHospitalDischarge = Omit<HospitalDischarge, 'id'>;
+
 export const GetHospitalEntries = async () => {
 	return await prismaClient.hospitalEntry.findMany({
 		include: {
@@ -10,7 +13,7 @@ export const GetHospitalEntries = async () => {
 	});
 }
 
-export const CreateHospitalEntry = async (entry: HospitalEntry) => {
+export const CreateHospitalEntry = async (entry: NewHospitalEntry) => {
 	return await prismaClient.hospitalEntry.create({
 		data: {
 			description: entry.description,
@@ -31,7 +34,7 @@ export const CreateHospitalEntry = async (entry: HospitalEntry) => {
 	});
 }
 
-export const UpsertHospitalEntryDischarge = async (entryId: string, discharge: HospitalDischarge) => {
+export const UpsertHospitalEntryDischarge = async (entryId: string, discharge: NewHospitalDischarge) => {
     return await prismaClient.hospitalEntry.update({
         where: {
             id: entryId
@@ -56,5 +59,4 @@ export const UpsertHospitalEntryDischarge = async (entryId: string, discharge: H
             discharge: true
         }
     })
-
 }
