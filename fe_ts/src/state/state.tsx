@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { Patient } from "../types/PatientTypes";
-import { Diagnose } from "../types/EntryTypes";
+import { Diagnosis } from "../types/EntryTypes";
 import { Action } from "./reducer";
 
 export type State = {
   patients: { [id: string]: Patient };
-  diagnoses: Array<Diagnose>;
+  diagnoses: Array<Diagnosis>;
 };
 
 const initialState: State = {

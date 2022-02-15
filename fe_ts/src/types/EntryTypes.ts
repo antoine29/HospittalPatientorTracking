@@ -5,6 +5,10 @@ export interface Diagnosis {
     latin: string;
 }
 
+export interface GetDiagnosesResponse {
+    Diagnoses: Array<Diagnosis>;
+}
+
 export enum EntryTypes {
     HospitalEntry = "Hospital",
     OccupationalHealthEntry = 'OccupationalHealth',

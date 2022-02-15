@@ -16,6 +16,10 @@ export interface Patient {
   entries?: Entry[];
 }
 
+export interface CreatePatientResponse {
+  createdPatient: Patient;
+}
+
 export interface NewPatient extends Omit<Patient, 'id' | 'entries'>{};
 
 export interface GetPatientsResponse {
