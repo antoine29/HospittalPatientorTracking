@@ -17,7 +17,6 @@ const PatientList: React.FC = () => {
 
   const openModal = (): void => setModalOpen(true);
   const closeModal = (): void => {
-    console.log('closing modal');
     setModalOpen(false);
     setError(undefined);
   };
@@ -27,8 +26,7 @@ const PatientList: React.FC = () => {
       console.error('Error creating patient:', error);
     },
     onCompleted: data => {
-      console.log('Created patient:', data.createdPatient);
-      dispatch(addPatient(data.createdPatient));
+      dispatch(addPatient(data.createPatient));
       closeModal();
     }
   })
