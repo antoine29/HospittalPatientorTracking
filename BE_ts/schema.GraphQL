@@ -9,21 +9,38 @@ type Diagnosis {
   name: String
 }
 
+interface Entry {
+  date: String
+  description: String
+  diagnoses: [Diagnosis]
+  id: ID
+  patient: Patient
+  specialist: String
+  type: String
+}
+
 enum Gender {
   Female
   Male
   Other
 }
 
-type HealthCheckEntry {
+type HealthCheckEntry implements Entry {
   date: String
   description: String
   diagnoses: [Diagnosis]
-  healthCheckRating: String
-  id: String!
+  healthCheckRating: HealthCheckRating
+  id: ID
   patient: Patient
   specialist: String
   type: String
+}
+
+enum HealthCheckRating {
+  CriticalRisk
+  Healthy
+  HighRisk
+  LowRisk
 }
 
 type HospitalDischarge {
@@ -34,17 +51,16 @@ type HospitalDischarge {
 }
 
 input HospitalDischargeInput {
-  criteria: String
-  date: String
+  criteria: String!
+  date: String!
 }
 
-type HospitalEntry {
+type HospitalEntry implements Entry {
   date: String
   description: String
   diagnoses: [Diagnosis]
   discharge: HospitalDischarge
-  healthCheckRating: String
-  id: String!
+  id: ID
   patient: Patient
   specialist: String
   type: String
@@ -52,20 +68,20 @@ type HospitalEntry {
 
 type Mutation {
   Diagnosis(code: String!, latin: String!, name: String!): Diagnosis!
-  HealthCheckEntry(date: String!, description: String!, diagnosisIDs: [String!]!, healthCheckRating: String!, patientId: String!, specialist: String!): HealthCheckEntry!
+  HealthCheckEntry(date: String!, description: String!, diagnosisIDs: [String!]!, healthCheckRating: HealthCheckRating!, patientId: String!, specialist: String!): HealthCheckEntry!
   HospitalEntry(date: String!, description: String!, diagnosisIDs: [String!]!, patientId: String!, specialist: String!): HospitalEntry!
   HospitalEntryDischarge(discharge: HospitalDischargeInput!, hospitalEntryId: String!): HospitalEntry
   OccupationalHealthEntry(date: String!, description: String!, diagnosisIDs: [String!]!, employerName: String!, patientId: String!, specialist: String!): OccupationalHealthEntry!
   OccupationalHealthEntrySickLeave(occupationalHealthEntryId: String!, sickLeave: SickLeaveInput!): OccupationalHealthEntry
-  Patient(dateOfBirth: String!, gender: String!, name: String!, occupation: String!, ssn: String!): Patient!
+  createPatient(dateOfBirth: String!, gender: Gender!, name: String!, occupation: String!, ssn: String!): Patient!
 }
 
-type OccupationalHealthEntry {
+type OccupationalHealthEntry implements Entry {
   date: String
   description: String
   diagnoses: [Diagnosis]
   employerName: String
-  id: String!
+  id: ID
   patient: Patient
   sickLeave: SickLeave
   specialist: String
@@ -74,8 +90,8 @@ type OccupationalHealthEntry {
 
 type Patient {
   dateOfBirth: String
+  entries: [Entry]
   gender: Gender
-  healthCheckEntries: [HealthCheckEntry]
   id: String!
   name: String
   occupation: String
@@ -99,6 +115,6 @@ type SickLeave {
 }
 
 input SickLeaveInput {
-  endDate: String
-  startDate: String
+  endDate: String!
+  startDate: String!
 }
