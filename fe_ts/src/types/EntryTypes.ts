@@ -34,7 +34,7 @@ export interface FormEntry extends NewEntry {
     healthCheckRating: HealthCheckRating;
 
     //hospital
-    //discharge: HospitalDischarge;
+    discharge: HospitalDischarge;
 
     //occupational
     employerName: string;

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { ApolloProvider } from "@apollo/client";
 
-// ToDo: importing in index.html due an error with webpack
+// ToDo: this import breaks the bundle. Importing it instead in index.html
 //import 'semantic-ui-css/semantic.min.css';
 
 import { client } from './graphQL/apolloClient'
