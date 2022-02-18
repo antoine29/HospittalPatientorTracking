@@ -1,7 +1,7 @@
 import React from "react";
 import { ErrorMessage, Field, FieldProps, FormikProps } from "formik";
 import { Dropdown, DropdownProps, Form } from "semantic-ui-react";
-import { Diagnose } from "../types/EntryTypes";
+import { Diagnosis } from "../types/EntryTypes";
 
 // structure of a single option
 export type SelectFieldOption = {
@@ -52,9 +52,6 @@ export const TextField: React.FC<TextProps> = ({
   </Form.Field>
 );
 
-/*
-  for exercises 9.24.-
-*/
 interface NumberProps extends FieldProps {
   label: string;
   errorMessage?: string;
@@ -78,11 +75,11 @@ export const DiagnosisSelection = ({
   setFieldValue,
   setFieldTouched
 }: {
-  diagnoses: Diagnose[];
-  setFieldValue: FormikProps<{ diagnosisCodes: string[] }>["setFieldValue"];
-  setFieldTouched: FormikProps<{ diagnosisCodes: string[] }>["setFieldTouched"];
+  diagnoses: Diagnosis[];
+  setFieldValue: FormikProps<{ diagnosisIDs: string[] }>["setFieldValue"];
+  setFieldTouched: FormikProps<{ diagnosisIDs: string[] }>["setFieldTouched"];
 }) => {
-  const field = "diagnosisCodes";
+  const field = "diagnosisIDs";
   const onChange = (
     _event: React.SyntheticEvent<HTMLElement, Event>,
     data: DropdownProps
@@ -94,7 +91,7 @@ export const DiagnosisSelection = ({
   const stateOptions = diagnoses.map(diagnosis => ({
     key: diagnosis.code,
     text: `${diagnosis.name} (${diagnosis.code})`,
-    value: diagnosis.code
+    value: diagnosis.id
   }));
 
   return (
