@@ -20,9 +20,11 @@
     "prepare": "npm run build",
     "pretest": "npm run build",
     "posttest": "npm run lint",
-    "prisma-test": "ts-node-dev --transpile-only --no-notify prisma-test.ts",
     "prisma-generate": "npx prisma generate",
-    "prisma-push": "npx prisma db push"
+    "prisma-push": "npx prisma db push",
+    "prisma-reset": "npx prisma db push --force-reset",
+    "prisma-seed": "ts-node-dev --transpile-only --no-notify ./prisma/initialData.ts",
+    "prisma-test": "ts-node-dev --transpile-only --no-notify prisma-test.ts"
   },
   "dependencies": {
     "@prisma/client": "^2.23.0",

@@ -1,0 +1,96 @@
+{
+	"diagnoses": [
+		{
+			"code": "A69.0",
+			"name": "NECROTIZING ULCERATIVE STOMATITIS",
+			"latin": ""
+		},
+		{
+			"code": "A69.1",
+			"name": "OTHER VINCENT'S INFECTIONS",
+			"latin": ""
+		},
+		{
+			"code": "B00.2",
+			"name": "HERPESVIRAL GINGIVOSTOMATITIS AND PHARYNGOTONSILLI",
+			"latin": ""
+		},
+		{
+			"code": "B00.9",
+			"name": "HERPESVIRAL INFECTION: UNSPECIFIED",
+			"latin": ""
+		},
+		{
+			"code": "B37.0",
+			"name": "CANDIDAL STOMATITIS",
+			"latin": ""
+		},
+		{
+			"code": "B37.9",
+			"name": "CANDIDIASIS: UNSPECIFIED",
+			"latin": ""
+		},
+		{
+			"code": "C80.1",
+			"name": "MALIGNANT (PRIMARY) NEOPLASM: UNSPECIFIED",
+			"latin": ""
+		},
+		{
+			"code": "G43.909",
+			"name": "MIGRAINE: UNSPECIFIED: NOT INTRACTABLE: WITHOUT",
+			"latin": ""
+		},
+		{
+			"code": "G47.63",
+			"name": "BRUXISM, SLEEP RELATED",
+			"latin": ""
+		},
+		{
+			"code": "G89.29",
+			"name": "OTHER CHRONIC PAIN",
+			"latin": ""
+		},
+		{
+			"code": "J32.9",
+			"name": "CHRONIC SINUSTIS: UNSPECIF",
+			"latin": ""
+		}
+	],
+	"patients": [
+		{
+			"name": "Mary G. Colon",
+			"ssn": "538-74-XXXX",
+			"dateOfBirth": "April 30, 1945",
+			"gender": "Female",
+			"occupation": "Aquaculture farmer"
+		},
+		{
+			"name": "Linda M. Malone",
+			"ssn": "594-52-XXXX",
+			"dateOfBirth": "June 24, 1952",
+			"gender": "Female",
+			"occupation": "Reservation and transportation ticket agent"
+		},
+		{
+			"name": "Pamela P. Banks",
+			"ssn": "548-22-XXXX",
+			"dateOfBirth": "April 2, 1990",
+			"gender": "Female",
+			"occupation": "Printing machine operator"
+		},
+		{
+			"name": "Steven V. Bowles",
+			"ssn": "533-98-XXXX",
+			"dateOfBirth": "January 6, 1999",
+			"gender": "Male",
+			"occupation": "Securities analyst"
+		},
+		{
+			"name": "Peter S. McKinney",
+			"ssn": "517-41-XXXX",
+			"dateOfBirth": "May 23, 1956",
+			"gender": "Male",
+			"occupation": "Detention officer"
+		}
+	]
+}
