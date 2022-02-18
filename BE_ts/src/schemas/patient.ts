@@ -1,5 +1,8 @@
 import { objectType, enumType, extendType, nonNull, stringArg } from "nexus";
 import { GetPatients, GetPatient, CreatePatient } from '../dao/patients'
+import { NexusGenFieldTypes } from '../../nexus-typegen'
+
+type NexusPatient = NexusGenFieldTypes['Patient'] | null;
 
 export const Gender = enumType({
 	name: 'Gender',
@@ -10,6 +13,7 @@ export const Gender = enumType({
 //Patient => full fields
 //Patients => basic fields
 // or just get a way to omit the 'entries' field in a getPatients query
+//https://github.com/graphql-nexus/nexus/issues/216
 export const Patient = objectType({
 	name: 'Patient',
 	definition(t) {
@@ -36,14 +40,36 @@ export const PatientQueries = extendType({
 		// get patient
 		t.field('Patient', {
 			type: 'Patient',
-			args: {
-				id: nonNull(stringArg()),
-			},
+			args: { id: nonNull(stringArg()) },
 			resolve(_root, args, ctx) {
-				//return ctx.prisma.patient.findUnique({ where: { id: args.id } });
-				const patientId: string = args.id;
-				const patient = GetPatient(patientId);
-				return patient;
+				const getPatientCall = async() => {
+					const patient = await GetPatient(args.id);
+					if(patient){
+						const mergedEntries = [
+							...patient.healthCheckEntries,
+							...patient.hospitalEntries,
+							...patient.occupationalHealthEntries
+						]
+						
+						// ToDo: check if all the implementation fields are present
+						const fixedPatient: NexusPatient = {
+							id: patient.id,
+							name: patient.name,
+							dateOfBirth: patient.dateOfBirth,
+							ssn: patient.ssn,
+							gender: patient.gender,
+							occupation: patient.occupation,
+							entries: mergedEntries
+						};
+				
+						return fixedPatient;
+					}
+
+					return null;
+
+				}
+				
+				return getPatientCall();
 			},
 		});
 	},
@@ -53,7 +79,7 @@ export const PatientMutations = extendType({
 	type: 'Mutation',
 	definition(t) {
 		// create a new patient
-		t.nonNull.field('NewPatient', {
+		t.nonNull.field('createPatient', {
 			type: 'Patient',
 			args: {
 				name: nonNull(stringArg()),
@@ -72,6 +98,7 @@ export const PatientMutations = extendType({
 				//		occupation: args.occupation
 				//	},
 				//});
+				
 				return CreatePatient(args);
 			},
 		});
