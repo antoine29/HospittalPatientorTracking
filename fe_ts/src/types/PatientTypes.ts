@@ -17,7 +17,7 @@ export interface Patient {
 }
 
 export interface CreatePatientResponse {
-  createdPatient: Patient;
+  createPatient: Patient;
 }
 
 export interface NewPatient extends Omit<Patient, 'id' | 'entries'>{};

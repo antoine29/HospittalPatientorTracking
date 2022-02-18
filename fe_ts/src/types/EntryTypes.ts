@@ -22,6 +22,7 @@ export interface Entry {
     specialist: string;
     diagnoses: Array<Diagnosis>;
     type: EntryTypes;
+    patientId: string;
 }
 
 export interface NewEntry extends Omit<Entry, 'id' | 'diagnoses'> {
@@ -41,10 +42,10 @@ export interface FormEntry extends NewEntry {
 }
 
 export enum HealthCheckRating {
-    "Healthy" = 0,
-    "LowRisk" = 1,
-    "HighRisk" = 2,
-    "CriticalRisk" = 3
+    Healthy = 'Healthy',
+    LowRisk = 'LowRisk',
+    HighRisk = 'HighRisk',
+    CriticalRisk ='CriticalRisk'
 }
 
 export interface HealthCheckEntry extends Entry {
@@ -54,6 +55,10 @@ export interface HealthCheckEntry extends Entry {
 export interface NewHealthCheckEntry extends NewEntry {
     healthCheckRating: HealthCheckRating;
 };
+
+export interface CreateNewHealthCheckEntryResponse {
+    HealthCheckEntry: HealthCheckEntry;
+}
 
 interface HospitalDischarge {
     date: string;
@@ -65,6 +70,10 @@ export interface HospitalEntry extends Entry {
 }
 
 export interface NewHospitalEntry extends NewEntry {}
+
+export interface CreateNewHospitalEntryResponse {
+    HospitalEntry: HospitalEntry;
+}
 
 interface SickLeave {
     startDate: string;
@@ -79,6 +88,10 @@ export interface OccupationalHealthEntry extends Entry {
 
 export interface NewOccupationalHealthEntry extends Omit<OccupationalHealthEntry, 'id' | 'diagnoses' | 'sickLeave'> {
     diagnosisIDs: Array<Diagnosis['code']>;
+}
+
+export interface CreateNewOccupationalHealthEntryResponse {
+    OccupationalHealthEntry: OccupationalHealthEntry;
 }
 
 export type NewEntries =
