@@ -25,6 +25,8 @@ export const HospitalEntry = objectType({
 				// Or maybe once i'm returnig a null for this field, the 'discharge' field dissappear from 'HospitalEntry'
 				// So in order to get type safety, i need to cast it to the propper type
 				// Anyways, returning as it is seems to be working 2
+				// Also, there is no way to hide a the 'active' field from a nexus schema, so i solved this by making these 'custom' types
+				// to have the active field only in the resolver and not in the schema
 				// return root.discharge?.active ? root.discharge : null
 				//const casted = root as nexusHospitalEntry;
 				const casted = root as customHospitalEntry;
