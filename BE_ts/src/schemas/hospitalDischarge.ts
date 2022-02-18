@@ -1,4 +1,4 @@
-import { objectType, extendType, nonNull, stringArg, list } from "nexus";
+import { objectType } from "nexus";
 
 export const HospitalDischarge = objectType({
 	name: 'HospitalDischarge',
@@ -6,9 +6,6 @@ export const HospitalDischarge = objectType({
 		t.nonNull.string('id');
         t.string('date');
         t.string('criteria');
-        t.string('hospitalEntry');
-		t.field('hospitalEntry', {
-			type: 'HospitalEntry'
-		});
+		t.field('hospitalEntry', { type: 'HospitalEntry' });
 	},
 });

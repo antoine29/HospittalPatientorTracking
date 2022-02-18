@@ -1,16 +1,34 @@
-import { objectType, extendType, nonNull, stringArg, list, arg, extendInputType } from "nexus";
+import { objectType, extendType, nonNull, stringArg, arg, extendInputType } from "nexus";
 import {
     GetOccupationalHealthEntries,
     CreateOccupationalHealthEntry,
     UpsertOccupationalHealthEntrySickLeave } from '../dao/occupationalHealthEntries';
 import { NewEntryInput } from ".";
+import { NexusGenFieldTypes } from '../../nexus-typegen'
+
+type NexusOccupationalEntry = NexusGenFieldTypes['OccupationalHealthEntry'];
+type NexusSickLeave = NexusGenFieldTypes['SickLeave'];
+
+type CustomNexusSickLeave = NexusSickLeave & {
+	active: boolean
+};
+type CustomOccupationalEntry = Omit<NexusOccupationalEntry, 'sickLeave'> & {
+	sickLeave: CustomNexusSickLeave
+};
+
 
 export const OccupationalHealthEntry = objectType({
 	name: 'OccupationalHealthEntry',
 	definition(t) {
 		t.implements('Entry')
         t.string('employerName');
-        t.field('sickLeave', { type: 'SickLeave' });
+        t.field('sickLeave', {
+			type: 'SickLeave',
+			resolve: (root) => {
+				const casted = root as CustomOccupationalEntry;
+				return casted.sickLeave?.active ? casted.sickLeave : null;
+			}
+		});
 	},
 });
 

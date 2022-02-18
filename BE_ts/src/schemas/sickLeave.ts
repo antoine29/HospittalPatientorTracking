@@ -6,8 +6,6 @@ export const SickLeave = objectType({
 		t.nonNull.string('id');
         t.string('startDate');
         t.string('endDate');
-		t.field('occupationalHealthEntry', {
-			type: 'OccupationalHealthEntry'
-		});
+		t.field('occupationalHealthEntry', { type: 'OccupationalHealthEntry' });
 	},
 });

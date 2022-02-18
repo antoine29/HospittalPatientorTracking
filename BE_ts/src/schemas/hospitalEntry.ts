@@ -1,12 +1,36 @@
-import { objectType, extendType, nonNull, stringArg, list, arg, extendInputType } from "nexus";
+import { objectType, extendType, nonNull, stringArg, list, arg, extendInputType, interfaceType } from "nexus";
 import { GetHospitalEntries, CreateHospitalEntry, UpsertHospitalEntryDischarge } from '../dao/hospitalEntries'
 import { NewEntryInput } from ".";
+
+import { NexusGenFieldTypes } from '../../nexus-typegen'
+
+type nexusHospitalEntry = NexusGenFieldTypes['HospitalEntry'];
+type nexusHospitalDischarge = NexusGenFieldTypes['HospitalDischarge'];
+
+type customHospitalDischarge = nexusHospitalDischarge & {
+	active: boolean
+};
+type customHospitalEntry = Omit<nexusHospitalEntry, 'discharge'> & {
+	discharge: customHospitalDischarge
+};
 
 export const HospitalEntry = objectType({
 	name: 'HospitalEntry',
 	definition(t) {
-		t.implements('Entry')
-        t.field('discharge', { type: 'HospitalDischarge' });
+		t.implements('Entry');
+		t.field('discharge', {
+			type: 'HospitalDischarge',
+			resolve: (root) =>  {
+				// ToDo: idk why but root seems to be of 'Entry' type rather than of 'HospitalEntry' type.
+				// Or maybe once i'm returnig a null for this field, the 'discharge' field dissappear from 'HospitalEntry'
+				// So in order to get type safety, i need to cast it to the propper type
+				// Anyways, returning as it is seems to be working 2
+				// return root.discharge?.active ? root.discharge : null
+				//const casted = root as nexusHospitalEntry;
+				const casted = root as customHospitalEntry;
+				return casted.discharge?.active ? casted.discharge : null
+			}
+		});
 	},
 });
 
