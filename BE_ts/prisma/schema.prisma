@@ -80,6 +80,7 @@ model HospitalDischarge {
   id              String          @id @default(dbgenerated()) @map("_id") @db.ObjectId
   date            String
   criteria        String
+  active          Boolean         @default(false)
   hospitalEntry   HospitalEntry?
 
   @@map("HospitalDischarges")
@@ -107,6 +108,7 @@ model SickLeave {
   startDate                 String
   endDate                   String
   occupationalHealthEntry   OccupationalHealthEntry?
+  active                    Boolean                     @default(false)
 
   @@map("SickLeaves")
 }

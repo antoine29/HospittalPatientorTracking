@@ -24,6 +24,17 @@ export const CreateHospitalEntry = async (entry: NewHospitalEntry) => {
 			},
 			diagnoses: {
 				connect: entry.diagnosisIDs.map(id => {return { id }})
+			},
+			// ToDo:
+			// It seems i cannot create more than two hospitalEntries with an undefined (or null?)
+			// dischargeId. I think this is because prisma is forcing a HospitalEntry to have 
+			// a different dischargeId always. Maybe to raise an issue repport?
+			// (a boolean flag to indicate if a discharge is valid is the solution applied)
+			discharge: {
+				create: {
+					criteria: '',
+					date: ''
+				}
 			}
 		},
 		include: {
@@ -45,10 +56,12 @@ export const UpsertHospitalEntryDischarge = async (entryId: string, discharge: N
 					update: {
 						criteria: discharge.criteria,
 						date: discharge.date,
+						active: true
 					},
 					create: {
 						criteria: discharge.criteria,
 						date: discharge.date,
+						active: true
 					}
 				}
             }

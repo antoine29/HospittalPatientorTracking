@@ -25,6 +25,12 @@ export const CreateOccupationalHealthEntry = async (entry: NewOccupationalHealth
 			},
 			diagnoses: {
 				connect: entry.diagnosisIDs.map(id => {return { id }})
+			},
+			sickLeave: {
+				create: {
+					startDate: '',
+					endDate: ''
+				}
 			}
 		},
 		include: {
@@ -45,11 +51,13 @@ export const UpsertOccupationalHealthEntrySickLeave = async (entryId: string, si
 				upsert:{
 					update: {
                         startDate: sickLeave.startDate,
-                        endDate: sickLeave.endDate
+                        endDate: sickLeave.endDate,
+						active: true
 					},
 					create: {
 						startDate: sickLeave.startDate,
-                        endDate: sickLeave.endDate
+                        endDate: sickLeave.endDate,
+						active: true
 					}
 				}
             }
