@@ -1,9 +1,9 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, HashRouter, Routes, Route, Link } from "react-router-dom";
 import { Button, Divider, Header, Container } from "semantic-ui-react";
 import { useQuery } from "@apollo/client";
 
-import { GET_PATIENTS, GET_DIAGNOSES }  from './graphQL/queries'
+import { GET_PATIENTS, GET_DIAGNOSES } from './graphQL/queries'
 import { useStateValue, setPatients, setDiagnoses } from "./state";
 import { GetPatientsResponse } from "./types/PatientTypes";
 import { GetDiagnosesResponse } from "./types/EntryTypes";
@@ -11,8 +11,23 @@ import { GetDiagnosesResponse } from "./types/EntryTypes";
 import PatientList from "./Pages/Patients";
 import PatientInfo from "./Pages/Patient";
 
-import { PrintFormatedJson } from "./tools";
+import { PrintFormatedJson, getRouterType } from "./tools";
 
+const AppRoutes = () => {
+  return (
+    <Container>
+      <Header as="h1">Patientor</Header>
+      <Button as={Link} to="/" primary>
+        Home
+      </Button>
+      <Divider hidden />
+      <Routes>
+        <Route path="/patients/:id" element={<PatientInfo />} />
+        <Route path="/" element={<PatientList />} />
+      </Routes>
+    </Container>
+  );
+}
 const App: React.FC = () => {
   const [, dispatch] = useStateValue();
   const { loading: getPatientsLoading, error: getPatientsError } = useQuery<GetPatientsResponse>(GET_PATIENTS, {
@@ -21,45 +36,38 @@ const App: React.FC = () => {
     }
   });
 
-  const { loading: getDiagnosesLoading , error: getDiagnosesError } = useQuery<GetDiagnosesResponse>(GET_DIAGNOSES, {
+  const { loading: getDiagnosesLoading, error: getDiagnosesError } = useQuery<GetDiagnosesResponse>(GET_DIAGNOSES, {
     onCompleted: (data: GetDiagnosesResponse) => {
       dispatch(setDiagnoses(data.Diagnoses));
     }
   });
-  
-  if(getPatientsLoading || getDiagnosesLoading){
+
+  if (getPatientsLoading || getDiagnosesLoading) {
     return (<div>Loading...</div>)
   }
 
-  if(getPatientsError || getDiagnosesError){
+  if (getPatientsError || getDiagnosesError) {
     return (
       <div>
         <div>Error:</div>
         {getPatientsError &&
-        <div>{PrintFormatedJson(getPatientsError)}</div>}
+          <div>{PrintFormatedJson(getPatientsError)}</div>}
         {getDiagnosesError &&
-        <div>{PrintFormatedJson(getDiagnosesError)}</div>}
+          <div>{PrintFormatedJson(getDiagnosesError)}</div>}
       </div>
     );
   }
 
-  return (
-    <div className="App">
-      <Router>
-        <Container>
-          <Header as="h1">Patientor</Header>
-          <Button as={Link} to="/" primary>
-            Home
-          </Button>
-          <Divider hidden />
-          <Routes>
-            <Route path="/patients/:id" element={<PatientInfo />} />
-            <Route path="/" element={<PatientList />} />
-          </Routes>
-        </Container>
-      </Router>
-    </div>
-  );
+  const routerType = getRouterType();
+  
+  console.log(`Using ${routerType} router.`);
+  return routerType === 'hash' ? (
+    <HashRouter>
+      <AppRoutes />
+    </HashRouter>) : (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>);
 };
 
 export default App;

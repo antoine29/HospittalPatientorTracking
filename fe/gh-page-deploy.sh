@@ -11,5 +11,5 @@ rm -rf ../docs
 cp -r ./build ../docs
 
 git add .
-git commit -m "Updated: `date +'%Y-%m-%d %H:%M:%S'`"
+git commit -m "Updated docs/: `date +'%Y-%m-%d %H:%M:%S'`"
 git push origin
