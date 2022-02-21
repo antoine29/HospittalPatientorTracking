@@ -8,8 +8,8 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  //url      = env("DATABASE_URL")
-  url      = "mongodb://admin:password@localhost/patientor?authSource=admin"
+  url      = env("DATABASE_URL")
+  //url      = "mongodb://admin:password@localhost/patientor?authSource=admin"
 }
 
 // ToDo: check enbeded docs
