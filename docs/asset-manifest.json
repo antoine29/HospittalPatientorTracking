@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/static/js/main.0cb0db67.js",
-    "static/js/787.7066aac0.chunk.js": "/static/js/787.7066aac0.chunk.js",
-    "index.html": "/index.html",
-    "main.0cb0db67.js.map": "/static/js/main.0cb0db67.js.map",
-    "787.7066aac0.chunk.js.map": "/static/js/787.7066aac0.chunk.js.map"
+    "main.js": "/HospittalPatientorTracking/static/js/main.ff35d422.js",
+    "static/js/787.7066aac0.chunk.js": "/HospittalPatientorTracking/static/js/787.7066aac0.chunk.js",
+    "index.html": "/HospittalPatientorTracking/index.html",
+    "main.ff35d422.js.map": "/HospittalPatientorTracking/static/js/main.ff35d422.js.map",
+    "787.7066aac0.chunk.js.map": "/HospittalPatientorTracking/static/js/787.7066aac0.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.0cb0db67.js"
+    "static/js/main.ff35d422.js"
   ]
 }
