@@ -35,7 +35,7 @@ Build the project image with
 ```console
 $ docker build . -t patientor-be
 ```
-An `.env.local` file is required, but be aware the project code should be able to reach the mongo db instance from within the container. Assuming you're still working with the previous mongo db docker container, the `MONGODB_URI` field would look as:
+An `.env.container` file is required, but be aware the project code should be able to reach the mongo db instance from within the container. Assuming you're still working with the previous mongo db docker container, the `MONGODB_URI` field would look as:
 ```
 DATABASE_URL=mongodb://admin:password@host.docker.internal/patientor?authSource=admin
 ```
@@ -44,7 +44,7 @@ And you would run the container with:
 ```console
 $ docker run -it -p 4001:{env.local PORT} --name be --rm \
     --add-host=host.docker.internal:host-gateway \
-    --env-file .env.local \
+    --env-file .env.container \
     patientor-be
 ```
 
