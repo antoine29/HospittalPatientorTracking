@@ -1,7 +1,7 @@
 import { prismaClient, HospitalEntry, HospitalDischarge } from '../../prisma'
 
 type NewHospitalEntry = Omit<HospitalEntry, 'id' | 'type' | 'dischargeId'>;
-type NewHospitalDischarge = Omit<HospitalDischarge, 'id'>;
+type NewHospitalDischarge = Omit<HospitalDischarge, 'id' | 'active'>;
 
 export const GetHospitalEntries = async () => {
 	return await prismaClient.hospitalEntry.findMany({

@@ -1,7 +1,7 @@
 import { prismaClient, OccupationalHealthEntry, SickLeave } from '../../prisma'
 
 type NewOccupationalHealthEntry = Omit<OccupationalHealthEntry, 'id' | 'type' | 'sickLeaveId'>;
-type NewSickLeave = Omit<SickLeave, 'id'>;
+type NewSickLeave = Omit<SickLeave, 'id' | 'active'>;
 
 export const GetOccupationalHealthEntries = async () => {
 	return await prismaClient.occupationalHealthEntry.findMany({
