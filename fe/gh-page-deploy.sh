@@ -10,7 +10,7 @@ npm run build
 rm -rf ../docs
 cp -r ./build ../docs
 
-git add .
+git add ../docs/
 git commit -m "Updated docs/: `date +'%Y-%m-%d %H:%M:%S'`"
 git push origin
 git checkout master
