@@ -1,26 +1,16 @@
-# TypeScript
+# Patientor
+A nodeJs application meant to be a showcase of mainly backend tools like  Prisma, GraphQL and Nexus.
 
-This main content is the Patientor application
+## Local development
+Check each `README.md` folder for instructions about how to run each project in console mode.
 
-1. patientor/ (frontend)
-2. patientorBE/ (backend)
+## Production (locally)
+You can serve the whole stack locally in production mode.
 
-## Runnig the backend
-
-Navigate to the `~/FullStackChallenge/part9/patientorBE` folder:
-```
-$ npm install
-$ node run dev
+```console
+$ docker-compose -f docker-compose-local.yml up
 ```
 
-## Runnig the frontend
-
-### You'll need the `patientorBE` application running
-
-Navigate to the `~/FullStackChallenge/part9/patientor` folder:
-```
-$ npm install
-$ npm start
-```
+* You can edit the compose `environment` variables in the `docker-compose-local.yml` as you need.
 
 ![](patientor.gif)

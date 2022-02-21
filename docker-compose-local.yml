@@ -1,0 +1,44 @@
+version: '3.5' 
+
+services: 
+  patientor-db:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - 27017:27017
+    container_name: pat-mongodb
+    networks:
+      - patientor-net
+
+  patientor-be:
+    image: patientor-be
+    container_name: pat-be
+    build: ./be
+    environment:
+      - DATABASE_URL=mongodb://admin:password@patientor-db/patientor?authSource=admin
+      - PORT=4001
+    ports:
+      - 4001:4001
+    networks:
+      - patientor-net
+    depends_on:
+      - "patientor-db"
+
+  patientor-fe: 
+    image: patientor-fe
+    container_name: pat-fe
+    build:
+      context: ./fe
+      args:
+        - REACT_APP_BACKEND_URL='http://localhost:4001/'
+    ports:
+      - 80:80
+    networks:
+      - patientor-net
+    depends_on:
+      - "patientor-be"
+
+networks:
+  patientor-net:
